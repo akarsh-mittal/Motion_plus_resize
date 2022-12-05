@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/child"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/move"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:id="@+id/handle"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/child"
+        android:layout_toEndOf="@+id/child"
+        android:background="@drawable/handle"
+        android:orientation="horizontal"/>
+
+
+
+</RelativeLayout>
