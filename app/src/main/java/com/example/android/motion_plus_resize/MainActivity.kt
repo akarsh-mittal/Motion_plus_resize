@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var parentView: RelativeLayout
     lateinit var floatWindowLayoutParams: WindowManager.LayoutParams
     lateinit var kHandle: LinearLayout
+    //add below annotation to remove the yello text override performClick warning
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         kHandle.setOnClickListener() {
             Log.d("***", "CHALA?")
         }
+
         floatView.setOnTouchListener(View.OnTouchListener { view, event ->
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -65,12 +68,13 @@ class MainActivity : AppCompatActivity() {
                         event.rawY + rightDY // (chota raw y movement (minus of two rawY (diff event)) + view.getY) bachega
 
 //                    Log.d("&&&&", "${newScale}, ${floatView.width}, ${floatView.width * newScale}")
+                    //temp1, temp2 for adjusting bounds after resizing
                     var temp1 =(floatView.width - floatView.width*newScale)/2
                     var temp2= (floatView.height - floatView.height*newScale)/2
                     if (xDisplacement > parentView.width - (floatView.width - temp1)) {
                         xDisplacement = (parentView.width - (floatView.width - temp1)).toFloat()
-                    } else if (xDisplacement < 0) {
-                        xDisplacement = 0f
+                    } else if (xDisplacement < 0-temp1) {
+                        xDisplacement = (0 - temp1).toFloat()
                     }
                     if (yDisplacement > parentView.height - floatView.height) {
                         yDisplacement = (parentView.height - floatView.height).toFloat()
@@ -87,6 +91,7 @@ class MainActivity : AppCompatActivity() {
                     temp3= xDisplacement
                     temp4= yDisplacement
 
+                    //so that the handle remains in same position when float view moves, otherwise handle will remain static
                     kHandle.animate().x((xDisplacement + (floatView.width-temp1)).toFloat())
                         .y((yDisplacement + (floatView.height -temp2)).toFloat()).setDuration(0).start()
 
@@ -189,9 +194,12 @@ class MainActivity : AppCompatActivity() {
 
 
                     //move handler
+
+                    /*think of handle position with respect to centre of the floating view, now if temp3, and temp4 not
+                    added then problem will come if you scale after moving the floatview ....as centre is calculated with original view */
                     Log.d("&&&&", "$centerX, $centerY, ${floatView.width}, ${floatView.width*newScale} $temp3}")
-                    kHandle.setX((centerX+temp3 + floatView.getWidth() / 2f * newScale).toFloat())
-                    kHandle.setY((centerY+temp4 + floatView.getHeight() / 2f * newScale).toFloat())
+                    kHandle.setX((centerX + floatView.getWidth() / 2f * newScale).toFloat())
+                    kHandle.setY((centerY+ floatView.getHeight() / 2f * newScale).toFloat())
 
 
                 } else if (event?.getAction() == MotionEvent.ACTION_UP) {

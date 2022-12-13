@@ -11,7 +11,7 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:background="@drawable/move"
-        android:orientation="horizontal" />
+        android:orientation="vertical" />
 
     <LinearLayout
         android:id="@+id/handle"
